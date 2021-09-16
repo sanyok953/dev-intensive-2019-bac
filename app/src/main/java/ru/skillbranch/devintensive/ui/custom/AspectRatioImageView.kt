@@ -1,10 +1,12 @@
 package ru.skillbranch.devintensive.ui.custom
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
 import ru.skillbranch.devintensive.R
 
+@SuppressLint("AppCompatCustomView") // del
 class AspectRatioImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

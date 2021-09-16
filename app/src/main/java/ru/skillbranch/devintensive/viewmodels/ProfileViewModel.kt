@@ -35,11 +35,11 @@ class ProfileViewModel: ViewModel() {
     }
 
     fun switchTheme() {
-        if (appTheme.value == AppCompatDelegate.MODE_NIGHT_YES) {
+        if (appTheme.value == AppCompatDelegate.MODE_NIGHT_YES)
             appTheme.value = AppCompatDelegate.MODE_NIGHT_NO
-        } else {
+        else
             appTheme.value = AppCompatDelegate.MODE_NIGHT_YES
-        }
+
         repository.saveAppTheme(appTheme.value!!)
     }
 }
