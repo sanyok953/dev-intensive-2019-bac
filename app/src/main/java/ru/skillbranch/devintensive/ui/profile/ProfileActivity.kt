@@ -13,7 +13,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_profile.*
 import ru.skillbranch.devintensive.R
+import ru.skillbranch.devintensive.extensions.afterTextChanged
 import ru.skillbranch.devintensive.models.Profile
+import ru.skillbranch.devintensive.utils.Utils
 import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
 
 class ProfileActivity : AppCompatActivity() {
@@ -24,9 +26,11 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var viewModel: ProfileViewModel
     var isEditMode = false
     lateinit var viewFields: Map<String, TextView>
+    var isCorrectRepo = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         initViews(savedInstanceState)
@@ -36,7 +40,7 @@ class ProfileActivity : AppCompatActivity() {
 
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState?.putBoolean(IS_EDIT_MODE, isEditMode)
     }
@@ -84,6 +88,17 @@ class ProfileActivity : AppCompatActivity() {
 
         btn_switch_theme.setOnClickListener {
             viewModel.switchTheme()
+        }
+
+        et_repository.afterTextChanged {
+            isCorrectRepo = true
+            if (!Utils.validateRepoName(it)) {
+                wr_repository.error = "Невалидный адрес репозитория"
+                isCorrectRepo = false
+            } else{
+                wr_repository.error = ""
+            }
+
         }
     }
 

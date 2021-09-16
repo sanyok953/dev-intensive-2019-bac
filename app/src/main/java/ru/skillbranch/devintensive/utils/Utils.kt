@@ -2,6 +2,24 @@ package ru.skillbranch.devintensive.utils
 
 object Utils {
 
+
+
+    val exlude_list = listOf(
+        "enterprise",
+        "features",
+        "topics",
+        "collections",
+        "trending",
+        "events",
+        "marketplace",
+        "pricing",
+        "nonprofit",
+        "customer-stories",
+        "security",
+        "login",
+        "join"
+    )
+
     fun charTranslit(value: String): String? {
         var charsMap = mutableMapOf<String, String>()
         var resp: String? = null
@@ -78,6 +96,44 @@ object Utils {
         }
         return resp
     }
+
+
+    fun validateRepoName(name: String?): Boolean {
+
+        if (name.isNullOrBlank())
+            return true
+
+        var name_ = name.trim();
+        if (name.takeLast(1) == "/") {
+            name_ = name_.substring(0, name_.length - 1)
+        }
+        val prefix = when {
+            name_.startsWith(
+                "https://www.github.com/",
+                ignoreCase = true
+            ) -> "https://www.github.com/"
+            name_.startsWith("https://github.com/", ignoreCase = true) -> "https://github.com/"
+            name_.startsWith(
+                "http://www.github.com/",
+                ignoreCase = true
+            ) -> "http://www.github.com/"
+            name_.startsWith("http://github.com/", ignoreCase = true) -> "http://github.com/"
+            name_.startsWith("www.github.com/", ignoreCase = true) -> "www.github.com/"
+            name_.startsWith("github.com/", ignoreCase = true) -> "github.com/"
+            else -> "-"
+        }
+
+        if (prefix.length > 5) {
+            val user = name_.substring(prefix.length)
+            if (user.contains("/", ignoreCase = true) || user.contains(" ", ignoreCase = true))
+                return false;
+            if (user !in exlude_list)
+                return true
+        }
+        return false
+    }
+
+
     fun parseFullName(fullName: String?): Pair<String?, String?> {
         if (fullName == null || fullName == "" || fullName == " ") {
             return null to null
