@@ -1,5 +1,11 @@
 package ru.skillbranch.devintensive.utils
 
+import android.content.Context
+import android.graphics.*
+import android.util.TypedValue
+import ru.skillbranch.devintensive.R
+import kotlin.math.round
+
 object Utils {
 
 
@@ -249,6 +255,43 @@ object Utils {
         else if (initF != null && initL == null) return initF
         else if (initF == null && initL != null) return initL
         else return "$initF$initL"
+    }
+
+    fun generateAvatar(ctx: Context, imgSize: Int, text: String, col: Int): Bitmap {
+
+        //val imgSize = ctx.resources.getDimensionPixelSize(R.dimen.avatar_round_size)
+
+        val rect = Rect().apply {
+            bottom = imgSize
+            right = imgSize
+        }
+        val value = TypedValue()
+        val resColor = ctx.obtainStyledAttributes(value.data, intArrayOf(R.attr.colorAccent))
+        val paintBg = Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            color = col // resColor.getColor(0,0)
+            isAntiAlias = true
+        }
+
+
+        val paintText = Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            color = ctx.getColor(android.R.color.white)
+            textSize = imgSize * 0.5f
+            textAlign = Paint.Align.CENTER
+        }
+
+        val bitmap = Bitmap.createBitmap(imgSize, imgSize, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        with(canvas) {
+            drawRect(rect, paintBg)
+            drawText(text, round(imgSize/2f), round((imgSize/1.5f)), paintText)
+        }
+        resColor.recycle()
+        return bitmap
+
     }
 
 }

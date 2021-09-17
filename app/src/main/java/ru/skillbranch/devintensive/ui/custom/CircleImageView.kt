@@ -93,7 +93,7 @@ class CircleImageView @JvmOverloads constructor(context: Context, attrs: Attribu
         return bitmap
     }
 
-    private fun setupBitmap() {
+    fun setupBitmap() {
         if (!isInit)
             return
 
